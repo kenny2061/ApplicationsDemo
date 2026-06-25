@@ -24,6 +24,8 @@ jobs:
       app_name: ${{ vars.APP_NAME }}
       app_repo: ${{ github.repository }}
       app_ref: ${{ github.ref }}
+      pipeline_repo: 'PipelinesDemo'
+      pipeline_repo_ref: 'main'
       program_type: ${{ vars.PROGRAM_TYPE }}
       code_type: ${{ vars.CODE_TYPE }}
       override_variables: '{"GO_VERSION":"1.26.x"}'
