@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - ".github/workflows/**"
+  workflow_dispatch:
+    inputs:
+      envName:
+        description: "Environment"
+        required: true
+        type: choice
+        options:
+          - dev
+          - test
+        default: dev
+
+jobs:
+  stage_build_and_deploy:
+    uses: kenny2061/gha-templates/.github/workflows/stage_build-go.yaml@main
+    with:
+      app_name: ${{ vars.APP_NAME }}
+      app_repo: ${{ github.repository }}
+      app_ref: ${{ github.ref }}
+      program_type: ${{ vars.PROGRAM_TYPE }}
+      code_type: ${{ vars.CODE_TYPE }}
+      override_variables: '{"GO_VERSION":"1.26.x"}'
+      run_pre_build_action: true
+      run_post_build_action: true
+      execute_file_name: "web-app"
+      image_src: "alpine:latest"
+      deploy_environment: ${{ github.event_name == 'push' && 'dev' || inputs.envName }}
+    secrets:
+      PAT_FOR_CHECKOUT_REPO: ${{ secrets.CHECKOUT_PRIVATE_ACCESS_TOKEN }}
