@@ -1,1 +1,3 @@
-go mod init web-app
+module web-app
+
+go 1.26
